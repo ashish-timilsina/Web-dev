@@ -3,9 +3,26 @@
 
 <head>
     <title>Fibonacci Number</title>
+    <script>
+        var fib_num = function(num) {
+          var input = num.value
+            if (num === 1) {
+                return [0, 1];
+            } else {
+                var f = fib_num(num - 1);
+                s.push(f[f.length - 1] + f[f.length - 2]);
+                return f;
+            }
+        };
+
+        document.getElementById("print_output").innerHTML = fib_num(document.getElementById("user_input").value);
+
+    </script>
 </head>
 
 <body>
+
+
     <h1 style="text-align: center;font-size:300%;">Fibonacci Number</h1>
     <p style="font-size:200%;">
         <figure style="float: right;" alt="Fibonacci Number Image">
@@ -20,14 +37,21 @@
         8 divided by 5 is 1.60.
     </p>
 
+
+
     <form>
-      <p style="text-align: left;font-size:200%;">
-        <strong>Fibonacci Calculator</strong>
-      </p>
-      <strong> Enter a non-negative number:</strong> <input />
-      <input type="submit" value="Compute!"/>
+        <p style="text-align: left;font-size:200%;">
+            <strong>Fibonacci Calculator</strong>
+        </p>
+        <strong> Enter a non-negative number:</strong> <input />
 
     </form>
+
+    <input id="user_input" type="button" value="Compute!" onclick="fib_num()"
+
+    <p id="print_output">
+
+    </p>
 
 
 
