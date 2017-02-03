@@ -4,30 +4,42 @@
 <head>
     <title>Fibonacci Number</title>
     <script>
-        var fib_num = function(num) {
-          var input = num.value
-            if (num === 1) {
-                return [0, 1];
+        //Recursive function that returns the fibonacci sequence given an input.
+        function fib_num(n) {
+            return n < 1 ? 0 :
+                n <= 2 ? 1 :
+                fib_num(n - 1) + fib_num(n - 2);
+        }
+
+        //Prints the fib_num() output into a table format.
+        function getFib() {
+
+            var userInput = document.getElementById('textInput').value; //assign html textbox value to a variable
+            var TABLE = "<table border=1 table-layout:auto><thead><tr><th>n</th><th>Fib(n)</th>"; //create a table layout with table headers
+
+            //user input validation then put values in the table
+            if (userInput != '' && userInput >= 0) {
+                for (var i = 0; i <= userInput; i++) {
+                    TABLE += "<tr><td>" + i + "</td><td>" + fib_num(i) + "</td></tr>"; //put index and fib_num() value in the table
+                }
+                TABLE += "</tr></thead></table>";
+                document.getElementById("display_fib").innerHTML = TABLE; //output the table to div in the body
             } else {
-                var f = fib_num(num - 1);
-                s.push(f[f.length - 1] + f[f.length - 2]);
-                return f;
+                document.getElementById("display_fib").innerHTML = "Please enter a valid input. Can't compute Fib of a negative integer or an empty input.<br />";
+
             }
-        };
-
-        document.getElementById("print_output").innerHTML = fib_num(document.getElementById("user_input").value);
-
+        }
     </script>
 </head>
 
 <body>
 
-
     <h1 style="text-align: center;font-size:300%;">Fibonacci Number</h1>
     <p style="font-size:200%;">
+        <!-- get image from wikipedia and add add a caption under the image-->
         <figure style="float: right;" alt="Fibonacci Number Image">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/PascalTriangleFibanacci.svg/360px-PascalTriangleFibanacci.svg.png" />
-            <figcaption>Pascal Triangle Fibonacci</figcaption>
+            <figcaption><em>Pascal Triangle Fibonacci</em></figcaption>
         </figure>
 
         You are here: Home / Phi / What is the Fibonacci Sequence (aka Fibonacci Series)? What is the Fibonacci Sequence (aka Fibonacci Series)? May 15, 2012 by Gary Meisner 65 Comments Leonardo Fibonacci discovered the sequence which converges on phi. Leonardo
@@ -36,24 +48,17 @@
         new number in the sequence is simply the sum of the two before it. 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, . . . The ratio of each successive pair of numbers in the sequence approximates phi (1.618. . .) , as 5 divided by 3 is 1.666…, and
         8 divided by 5 is 1.60.
     </p>
+    <hr />
+    <h2>Fibonacci Sequence Calculator</h2>
 
+    <!-- Create an input box then a button to compute the fibonacci number-->
+    <h3>
+      Enter a non-negative integer: <input type="text" id="textInput" />
+      <button onclick="getFib()">Compute</button>
+    </h3>
 
-
-    <form>
-        <p style="text-align: left;font-size:200%;">
-            <strong>Fibonacci Calculator</strong>
-        </p>
-        <strong> Enter a non-negative number:</strong> <input />
-
-    </form>
-
-    <input id="user_input" type="button" value="Compute!" onclick="fib_num()"
-
-    <p id="print_output">
-
-    </p>
-
-
+    <h4>Output:</h4>
+    <div id="display_fib"></div>
 
 
 </body>

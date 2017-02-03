@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hourly Forecast</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+        function hourlyForecast() {
+            //get docment ready when page starts
+            $(document).ready(function($) {
+
+                //get user input from the textbox
+                var userInput = document.getElementById('textInput').value;
+
+                //if userinput is not empty, do the following.
+                if (userInput != "") {
+
+                    //append userinput which is the key to the url
+                    var key_url = ("http://api.wunderground.com/api/" + userInput + "/geolookup/q/autoip.json");
+
+
+                    //perform the ajax operation that parses the zip code key from the json response
+                    $.ajax({
+                        url: key_url,
+                        dataType: "jsonp",
+                        success: function(parsed_json) {
+                            var zip_code = parsed_json['location']['zip']; //get the zipcode and assign to zipcode variable
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            $(".current").html("error in URL requests");
+                        };
+                    });
+
+                    //add the zip code to the new url and get hourly json response
+                    var zip_URL = ("http://api.wunderground.com/api/" + userInput + "/hourly/q/" + zip_code + ".json");
+
+                    //perform second ajax operation to parse the json response hourly
+                    $.ajax({
+                        url: zip_URL,
+                        dataType: "jsonp",
+                        success: function(parsed_json) {
+
+                            //parse by hourly forecast key then go Forecast time key
+                            var forecasthourly = parsed_json['hourly_forecast']['FCTTIME'];
+
+                            //parse through the Forecast time for each index
+                            for (index in forecasthourly) {
+                                var newHourlyString = hourly_forecast[index]['weekday_name'] + 'at' + hourly_forecast[index]['hour'] + ' is ' + hourly_forecast[index]['condition'];
+                                var newHourlyForecastList = $('<p/>').text(newHourlyString);
+                                $(".current").append(newHourlyForecastList); //append the output to the current class in div
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            $(".current").html("error in URL requests");
+                        };
+                    });
+
+
+                } else {
+                    $(".current").html("invalid input"); //if user input is empty, say invalid input
+                }
+
+            });
+        }
+    </script>
+</head>
+
+<body>
+
+    <h1>Hourly Forecast</h1>
+
+    <!-- Create an input box then a button to get the hourly forecast-->
+    <h2>
+    Enter the weather key: <input type="text" id="textInput" />
+    <button onclick="hourlyForecast()">Enter</button>
+    </h2>
+
+    <h3>Hourly Forecast:</h3>
+    <div class="current"></div>
+</body>
+
+</html>
